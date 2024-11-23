@@ -9,6 +9,7 @@ namespace eCommerceApp.Application.DTOs.Category
 {
     public class GetCategoryDto:CategoryBaseDto
     {
+
         public Guid Id { get; set; }
         public ICollection<GetProductDto> ?Products { get; set; }
     }
