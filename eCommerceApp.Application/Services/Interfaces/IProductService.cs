@@ -10,7 +10,7 @@ namespace eCommerceApp.Application.Services
 {
     internal interface IProductService
     {
-        Task<IEnumerable<CreateProductDto>> GetAllAsync();
+        Task<IEnumerable<GetProductDto>> GetAllAsync();
         Task<GetProductDto> GetByIdAsync(Guid id);
         Task<ServiceResponse> AddAsync(CreateProductDto productDto);
         Task<ServiceResponse> UpdateAsync(UpdateProductDto productDto);
