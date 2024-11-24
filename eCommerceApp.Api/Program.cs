@@ -1,3 +1,5 @@
+using eCommerceApp.Application.DependencyInjection;
+using eCommerceApp.Infrastructure.DependencyInjention;
 
 namespace eCommerceApp.Api
 {
@@ -14,7 +16,12 @@ namespace eCommerceApp.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddInfrastructureService(builder.Configuration);
+            builder.Services.AddApplicationService();
+
+
             var app = builder.Build();
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -22,6 +29,8 @@ namespace eCommerceApp.Api
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseInfrastructureService();
+            app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
