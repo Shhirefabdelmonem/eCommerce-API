@@ -28,16 +28,17 @@ namespace eCommerceApp.Application.Services.Implementations
         public async Task<ServiceResponse> DeleteAsync(Guid id)
         {
             int res = await categoryInterface.DeleteAsync(id);
+            
             return res > 0 ? new ServiceResponse(true, "Category deleted") :
-                new ServiceResponse(false, "Category failed to be deleted");
+                new ServiceResponse(false, "Category not found or  failed to be deleted");
         }
 
-        public async Task<IEnumerable<GetProductDto>> GetAllAsync()
+        public async Task<IEnumerable<GetCategoryDto>> GetAllAsync()
         {
             var rawData=await categoryInterface.GetAllAsync();//List of Category
             if (!rawData.Any())
                 return [];
-            return mapper.Map<IEnumerable<GetProductDto>>(rawData);//<TDestination>(TSource)
+            return mapper.Map<IEnumerable<GetCategoryDto>>(rawData);//<TDestination>(TSource)
         }
 
         public async Task<GetCategoryDto> GetByIdAsync(Guid id)
