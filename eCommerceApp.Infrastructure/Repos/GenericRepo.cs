@@ -1,13 +1,7 @@
-﻿using eCommerceApp.Application.Exceptions;
-using eCommerceApp.Domain.Interfaces;
+﻿using eCommerceApp.Domain.Interfaces;
 using eCommerceApp.Infrastructure.Data;
 
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace eCommerceApp.Infrastructure.Repos
 {

@@ -1,5 +1,6 @@
 using eCommerceApp.Application.DependencyInjection;
 using eCommerceApp.Infrastructure.DependencyInjention;
+using Serilog;
 
 namespace eCommerceApp.Api
 {
@@ -8,6 +9,14 @@ namespace eCommerceApp.Api
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            Log.Logger=new LoggerConfiguration().Enrich.FromLogContext().
+                WriteTo.Console().
+                WriteTo.File("log/log.txt",rollingInterval:RollingInterval.Day).
+                CreateLogger();
+
+            builder.Host.UseSerilog();
+            Log.Logger.Information("Apllication is building ......");
 
             // Add services to the container.
 
@@ -18,26 +27,43 @@ namespace eCommerceApp.Api
 
             builder.Services.AddInfrastructureService(builder.Configuration);
             builder.Services.AddApplicationService();
-
-
-            var app = builder.Build();
-
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            builder.Services.AddCors(builder =>
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                builder.AddDefaultPolicy(options => options.AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
+            });
+            try
+            {
+                var app = builder.Build();
+                app.UseCors();
+                app.UseSerilogRequestLogging();
+
+                // Configure the HTTP request pipeline.
+                if (app.Environment.IsDevelopment())
+                {
+                    app.UseSwagger();
+                    app.UseSwaggerUI();
+                }
+                app.UseInfrastructureService();
+                app.UseHttpsRedirection();
+
+                app.UseAuthorization();
+
+
+                app.MapControllers();
+                Log.Logger.Information("Application is running ......");
+                app.Run();
             }
-            app.UseInfrastructureService();
-            app.UseHttpsRedirection();
+            catch (Exception ex) 
+            {
+                Log.Logger.Error(ex, "Application is failed to start ......");
+            }
 
-            app.UseAuthorization();
+            finally
+            {
+                Log.CloseAndFlush();
+            }
 
-
-            app.MapControllers();
-
-            app.Run();
+            
         }
     }
 }
