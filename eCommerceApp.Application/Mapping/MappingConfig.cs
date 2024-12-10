@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using eCommerceApp.Application.DTOs.Category;
+using eCommerceApp.Application.DTOs.Identity;
 using eCommerceApp.Application.DTOs.Product;
 using eCommerceApp.Domain.Entities;
+using eCommerceApp.Domain.Entities.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +21,8 @@ namespace eCommerceApp.Application.Mapping
 
             CreateMap<Category, GetCategoryDto>();
             CreateMap<Product,GetProductDto>();
+            CreateMap<CreateUser, AppUser>();
+            CreateMap<LoginUser, AppUser>();
         }
     }
 }
