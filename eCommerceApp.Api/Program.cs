@@ -29,7 +29,13 @@ namespace eCommerceApp.Api
             builder.Services.AddApplicationService();
             builder.Services.AddCors(builder =>
             {
-                builder.AddDefaultPolicy(options => options.AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
+                builder.AddDefaultPolicy(options =>
+                {
+                    options.AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .WithOrigins("https://localhost:7025")
+                    .AllowCredentials();
+                });
             });
             try
             {
