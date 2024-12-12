@@ -1,12 +1,16 @@
-﻿using eCommerceApp.Application.Services.Interfaces.Logging;
+﻿using eCommerceApp.Application.Services.Interfaces.Cart;
+using eCommerceApp.Application.Services.Interfaces.Logging;
 using eCommerceApp.Domain.Entities;
 using eCommerceApp.Domain.Entities.Identity;
 using eCommerceApp.Domain.Interfaces;
 using eCommerceApp.Domain.Interfaces.Authentication;
+using eCommerceApp.Domain.Interfaces.Cart;
 using eCommerceApp.Infrastructure.Data;
 using eCommerceApp.Infrastructure.Middleware;
 using eCommerceApp.Infrastructure.Repos;
+
 using eCommerceApp.Infrastructure.Repos.Authentication;
+using eCommerceApp.Infrastructure.Repos.Cart;
 using eCommerceApp.Infrastructure.Services;
 using EntityFramework.Exceptions.SqlServer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -78,11 +82,14 @@ namespace eCommerceApp.Infrastructure.DependencyInjention
                 };
             });
 
-            services.AddScoped<IUserManagement, UserManagement>();
+            services.AddScoped<IUserManagement,UserManagement>();
             services.AddScoped<ITokenManagement,TokenManagement>();
             services.AddScoped<IRoleManagement,RoleManagement>();
-            
-            
+            services.AddScoped<IPaymentMethod,PaymentMethodRepo>();
+            services.AddScoped<IPaymentService,StripePaymentService>();
+
+            Stripe.StripeConfiguration.ApiKey = configuration["Stripe:SecretKey"];
+
             return services;
         }
         public static IApplicationBuilder UseInfrastructureService(this IApplicationBuilder app)
